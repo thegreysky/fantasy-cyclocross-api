@@ -6,6 +6,7 @@
 
 /tmp
 /log
+/.idea
 
 # Ignore bundler config.
 /.bundle
