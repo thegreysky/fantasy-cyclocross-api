@@ -29,6 +29,8 @@ def save_category_racers(category_id, category_name)
                      :name => racer['FullName'],
                      :previous_year_points => racer['Points'],
                      :category => category_name,
+                     :country => racer['NationFullName'],
+                     :country_short => racer['CountryIsoCode2']
                  }).save rescue nil
   end
 end
