@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uci_generated_racer_id: MyString
+  season_id: MyString
+  uci_id: 1
+  name: MyString
+  previous_year_points: 1
+  cost: 
+  cost: 
+  category: MyString
+
+two:
+  uci_generated_racer_id: MyString
+  season_id: MyString
+  uci_id: 1
+  name: MyString
+  previous_year_points: 1
+  cost: 
+  cost: 
+  category: MyString
