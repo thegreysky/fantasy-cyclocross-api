@@ -10,12 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_08_034414) do
+ActiveRecord::Schema.define(version: 2018_08_08_040501) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "uci_racers", force: :cascade do |t|
     t.string "uci_generated_racer_id"
     t.string "season_id"
-    t.integer "uci_id"
+    t.string "uci_id"
     t.string "name"
     t.integer "previous_year_points"
     t.decimal "cost", precision: 5, scale: 2
