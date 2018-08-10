@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uci_racer_id: 1
+  team_id: 1
+  active: false
+  season_id: 1
+
+two:
+  uci_racer_id: 1
+  team_id: 1
+  active: false
+  season_id: 1
