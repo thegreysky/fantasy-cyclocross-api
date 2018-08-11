@@ -3,5 +3,5 @@ class TeamSerializer < ActiveModel::Serializer
              :name,
              :owner
 
-  has_many :uci_racers
+  has_many :racers, :serializer => TeamUciRacerSerializer
 end
