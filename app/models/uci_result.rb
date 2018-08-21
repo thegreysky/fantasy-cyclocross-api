@@ -1,0 +1,2 @@
+class UciResult < ApplicationRecord
+end

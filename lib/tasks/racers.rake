@@ -20,6 +20,7 @@ task :set_cost => :environment do
   end
 end
 
+#Remove the (ASR) team stuff from peoples names
 def save_category_racers(category_id, category_name)
   get_racers(category_id).each do |racer|
     UciRacer.new({

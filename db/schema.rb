@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_10_021321) do
+ActiveRecord::Schema.define(version: 2018_08_21_115859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,19 @@ ActiveRecord::Schema.define(version: 2018_08_10_021321) do
     t.string "country"
     t.string "country_short"
     t.index ["uci_generated_racer_id"], name: "index_uci_racers_on_uci_generated_racer_id", unique: true
+  end
+
+  create_table "uci_results", force: :cascade do |t|
+    t.integer "racer_id"
+    t.integer "race_id"
+    t.string "competition_name"
+    t.integer "competition_id"
+    t.string "category"
+    t.integer "place"
+    t.integer "points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["racer_id", "race_id"], name: "index_uci_results_on_racer_id_and_race_id", unique: true
   end
 
 end
