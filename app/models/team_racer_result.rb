@@ -1,0 +1,2 @@
+class TeamRacerResult < ApplicationRecord
+end

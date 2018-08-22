@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_21_115859) do
+ActiveRecord::Schema.define(version: 2018_08_22_101024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "team_racer_results", force: :cascade do |t|
+    t.integer "team_racer_id"
+    t.integer "uci_result_id"
+    t.integer "week_number"
+    t.integer "team_id"
+    t.integer "points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_racer_id", "uci_result_id"], name: "index_team_racer_results_on_team_racer_id_and_uci_result_id", unique: true
+  end
 
   create_table "team_racers", force: :cascade do |t|
     t.integer "uci_racer_id"
