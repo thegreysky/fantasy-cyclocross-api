@@ -8,10 +8,9 @@ class Team < ApplicationRecord
 
   def racers
     uci_racers.each do |racer|
-      p uci_racers
       team_racer = team_racers.select { |tr| tr.uci_racer_id == racer.id }[0]
       racer.active = team_racer.active
-      racer.points = team_racer.team_racer_results.map(&:points).inject(0, &:+)
+      racer.results = team_racer.team_racer_results
     end
     uci_racers
   end
