@@ -10,3 +10,4 @@ class TeamWithResultsUciRacerSerializer < TeamUciRacerSerializer
       }}
   end
 end
+  

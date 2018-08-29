@@ -2,34 +2,32 @@ task :get_results => :environment do
   competitions = get_last_two_weeks_of_competitions
 
   competitions.each{ |c|
+    race_class = c["ClassCode"]
     get_races(c["CompetitionId"]).each{|r|
       event_id = get_event_id(r["Id"])
+      race_category = r["CategoryCode"]
+
       get_results(event_id).each{|result|
         racer = UciRacer.where("uci_generated_racer_id = '#{result['DisplayName'].gsub("'", "")}#{result['BirthDate']}25'").first
+        points = result["PointPcR"] ? result["PointPcR"] : get_points(race_class, race_category, result["Rank"].to_i)
 
         if racer != nil
-          current_result = UciResult.new({
-                            :racer_id => racer.id,
-                            :race_id => r["Id"],
-                            :competition_name => c["CompetitionName"],
-                            :competition_id => c["CompetitionId"],
-                            :category => r["CategoryCode"],
-                            :place => result["Rank"],
-                            :points => result["PointPcR"],
-                        })
-          current_result.save
+          current_result = UciResult.find_or_initialize_by({:racer_id => racer.id, :race_id => r["Id"]})
+          current_result.competition_name = c["CompetitionName"]
+          current_result.competition_id = c["CompetitionId"]
+          current_result.category = r["CategoryCode"]
+          current_result.place = result["Rank"]
+          current_result.points = points
+          current_result.save rescue nil
 
           TeamRacer.where(uci_racer_id: racer.id, active: true).each{|team_racer|
-            TeamRacerResult.new({
-                                    :team_racer_id => team_racer.id,
-                                    :uci_result_id => current_result.id,
-                                    :week_number => Time.now.strftime("%U").to_i,
-                                    :team_id => team_racer.team_id,
-                                    :points => result["PointPcR"],
-                                }).save
+            current_team_result = TeamRacerResult.find_or_initialize_by({:team_racer_id => team_racer.id, :uci_result_id => current_result.id})
+            current_team_result.week_number = Time.now.strftime("%U").to_i
+            current_team_result.team_id = team_racer.team_id
+            current_team_result.points = points
+            current_team_result.save
           }
         end
-
 
       }
     }
@@ -44,10 +42,10 @@ end
 
 def get_event_id(race_id)
   HTTParty.post("https://dataride.uci.ch/Results/iframe/Events/",
-                :body => {
-                    :disciplineId => 3,
-                    :raceId => race_id
-                }).parsed_response.first["EventId"]
+                                  :body => {
+                                      :disciplineId => 3,
+                                      :raceId => race_id
+                                  }).parsed_response.first["EventId"]
 end
 
 def get_results(event_id)
@@ -92,4 +90,22 @@ def get_last_two_weeks_of_competitions
                     'filter[filters][2][value]' => '126'
                 }).parsed_response['data']
       .select{ |c| get_date(c) > (Time.now - 2.weeks) }
+end
+
+def get_points(race_class, race_category, place)
+  points = {
+      "C1": [0, 80, 60, 40, 30, 25, 20, 17, 15, 12, 10, 8, 6, 4, 2, 1],
+      "C2": [0, 40, 30, 20, 15, 10, 8, 6, 4, 2, 1],
+      "MU": [0, 30, 20, 15, 12, 10, 8, 6, 4, 2, 1],
+      "MJ": [0, 10, 6, 4, 2, 1]
+  }
+
+  actual_place = place ? place : 0
+  actual_class = race_class
+  actual_class = 'MJ' if race_category.include? 'Junior'
+  actual_class = 'MU' if race_category.include? 'Under 23'
+
+  place_points = points[actual_class.to_sym][actual_place]
+
+  place_points ? place_points : 0
 end
