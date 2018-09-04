@@ -2,7 +2,8 @@ class TeamSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :owner,
-             :points
+             :points,
+             :paid
 
   has_many :racers, :serializer => TeamUciRacerSerializer
 end
