@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  home_team_id: 1
+  away_team_id: 1
+  winner_id: 1
+  loser_id: 1
+  week_number: 1
+  season_id: 1
+
+two:
+  home_team_id: 1
+  away_team_id: 1
+  winner_id: 1
+  loser_id: 1
+  week_number: 1
+  season_id: 1

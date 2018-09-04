@@ -5,9 +5,9 @@ class TeamsController < ApplicationController
 
   # GET /teams
   def index
-    @teams = Team.all
+    @matchups = Team.all
 
-    render json: @teams
+    render json: @matchups
   end
 
   # GET /teams/1
